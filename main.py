@@ -43,7 +43,22 @@ async def help_command(
 
 
 def main():
-    app = Application.builder().token(TOKEN).build()
+    from telegram.request import HTTPXRequest
+
+request = HTTPXRequest(
+    connection_pool_size=4,
+    connect_timeout=30,
+    read_timeout=30,
+    write_timeout=30,
+    pool_timeout=30
+)
+
+app = (
+    Application.builder()
+    .token(TOKEN)
+    .request(request)
+    .build()
+)
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
